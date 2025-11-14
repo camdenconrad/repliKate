@@ -632,13 +632,17 @@ public class TensorSequenceTree
                 throw new ArgumentException($"All tensors must have size {tensorSize}");
         }
 
+        // Append the sequence and compute the base index of these new items in the global fullSequence
         fullSequence.AddRange(sequence.Select(t => t.Clone()));
+        int baseIndex = Math.Max(0, fullSequence.Count - sequence.Length);
 
         if (fullSequence.Count > MAX_SEQUENCE_LENGTH)
         {
             int toRemove = fullSequence.Count - MAX_SEQUENCE_LENGTH;
             fullSequence.RemoveRange(0, toRemove);
             Console.WriteLine($"⚠️ Trimmed sequence to {MAX_SEQUENCE_LENGTH} tensors (removed oldest {toRemove})");
+            // After trimming, the baseIndex might shift, but since we just added the latest items,
+            // their indices remain at the end and thus still valid.
         }
 
         for (int i = 0; i < sequence.Length - 1; i++)
@@ -651,7 +655,7 @@ public class TensorSequenceTree
         }
 
         FindOrCreateNode(sequence[sequence.Length - 1]);
-        BuildNGrams(sequence);
+        BuildNGrams(sequence, baseIndex);
     }
 
     private int FindOrCreateNode(Tensor tensor)
@@ -673,7 +677,7 @@ public class TensorSequenceTree
         return nodes.Count - 1;
     }
 
-    private void BuildNGrams(Tensor[] sequence)
+    private void BuildNGrams(Tensor[] sequence, int baseIndex)
     {
         for (int n = 2; n <= maxContextWindow; n++)
         {
@@ -688,7 +692,8 @@ public class TensorSequenceTree
                     context.Add(sequence[i + j].Clone());
                 }
 
-                int nextIndex = i + n - 1;
+                // Map the local next index within this sequence to the global fullSequence index
+                int nextIndex = baseIndex + i + n - 1;
                 AddNGram(n, context, nextIndex);
             }
         }
@@ -797,6 +802,7 @@ public class TensorSequenceTree
 
         return candidates
             .OrderByDescending(kvp => kvp.Value)
+            .Where(kvp => kvp.Key >= 0 && kvp.Key < fullSequence.Count)
             .Take(topN)
             .Select(kvp => (fullSequence[kvp.Key].Clone(), kvp.Value / total))
             .ToList();

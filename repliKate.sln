@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "repliKate", "repliKate\repliKate.csproj", "{869704BE-6C5B-4F6C-B99D-5C6592975899}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connect4App", "Connect4App\Connect4App.csproj", "{2C5A24A1-5D9A-4B9C-A7C4-9F1A6E9E5C11}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{869704BE-6C5B-4F6C-B99D-5C6592975899}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{869704BE-6C5B-4F6C-B99D-5C6592975899}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{869704BE-6C5B-4F6C-B99D-5C6592975899}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C5A24A1-5D9A-4B9C-A7C4-9F1A6E9E5C11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C5A24A1-5D9A-4B9C-A7C4-9F1A6E9E5C11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C5A24A1-5D9A-4B9C-A7C4-9F1A6E9E5C11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C5A24A1-5D9A-4B9C-A7C4-9F1A6E9E5C11}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

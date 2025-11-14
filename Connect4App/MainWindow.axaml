@@ -1,0 +1,67 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:Connect4App.ViewModels"
+        x:Class="Connect4App.MainWindow"
+        x:DataType="vm:MainViewModel"
+        Width="520" Height="680"
+        Title="Connect 4 — Tensor AI vs Basic AI"
+        mc:Ignorable="d">
+  <Design.DataContext>
+    <vm:MainViewModel/>
+  </Design.DataContext>
+  <DockPanel>
+    <!-- Winner banner -->
+    <Border DockPanel.Dock="Top" Margin="8" CornerRadius="8" Background="{Binding WinnerBrush}">
+      <TextBlock Text="{Binding WinnerText}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" FontSize="20" FontWeight="Bold" Foreground="White"/>
+    </Border>
+
+    <!-- Controls toolbar -->
+    <WrapPanel Margin="8" DockPanel.Dock="Top" VerticalAlignment="Center">
+      <Button Content="Start" Command="{Binding StartCommand}"/>
+      <Button Content="Stop" Command="{Binding StopCommand}"/>
+      <Button Content="Step" Command="{Binding StepCommand}"/>
+      <Button Content="Reset" Command="{Binding ResetCommand}"/>
+      <Button Content="Save Model" Command="{Binding SaveModelCommand}"/>
+      <TextBlock Text="Speed:" VerticalAlignment="Center" Margin="12,0,0,0"/>
+      <Slider Minimum="0.5" Maximum="10" Width="140" Value="{Binding Speed, Mode=TwoWay}"/>
+    </WrapPanel>
+
+    <Grid Margin="8" RowDefinitions="Auto,Auto,*" ColumnDefinitions="*">
+      <TextBlock Grid.Row="0" Text="{Binding Status}"/>
+      <TextBlock Grid.Row="1" Margin="0,4,0,8" Text="{Binding Stats}"/>
+
+      <!-- Board area -->
+      <Border Grid.Row="2" Margin="0,8,0,0" Background="#1E3A8A" CornerRadius="12" Padding="10">
+        <ItemsControl ItemsSource="{Binding Rows}">
+          <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+              <StackPanel Orientation="Vertical"/>
+            </ItemsPanelTemplate>
+          </ItemsControl.ItemsPanel>
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <ItemsControl ItemsSource="{Binding}">
+                <ItemsControl.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"/>
+                  </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate x:DataType="vm:CellVm">
+                    <Border Width="64" Height="64" Margin="6" CornerRadius="32" Background="{Binding Color}" Opacity="{Binding Opacity}" BorderBrush="White" BorderThickness="2">
+                      <ToolTip.Tip>
+                        <TextBlock Text="{Binding Tooltip}"/>
+                      </ToolTip.Tip>
+                    </Border>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </Border>
+    </Grid>
+  </DockPanel>
+</Window>
